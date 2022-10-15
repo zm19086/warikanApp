@@ -59,61 +59,95 @@ document.getElementById('decide').addEventListener('click', function() {
   };
 })
 
-// 入力された名前と金額を配列に格納
+// マイナス以下の数値を空データに置き換える関数
+const minus_cut = (num) => {
+  if (num >= 0) {
+    return num;
+  } else {
+    return 0;
+  };
+}
 
+// 入力された名前と金額を配列に格納
 let list_array = [];
 
 const save_data = () => {
 
   let names_array = [];
+  let change_array = [];
+  let difference_array = [];
   let payment_array = [];
 
   const members = document.getElementsByClassName('form names');
   const payments = document.getElementsByClassName('form pay');
-
+  
   for (let i = 0; i < number.value; i++) {
     names_array.push(members.item(i).value);
     payment_array.push(payments.item(i).value);
+    change_array.push(minus_cut(payments.item(i).value - Number((price.value - (price.value % number.value)) / number.value)));
+    difference_array.push(minus_cut(Number((price.value - (price.value % number.value)) / number.value) - payments.item(i).value));
   };
-
-  list_array.push(names_array, payment_array);
-
+  
+  list_array.push(names_array, change_array, difference_array, payment_array);
+  
   console.log(list_array);
 }
 
-// 配列から各々の差額を計算
-const culculation = () => {
 
+// テーブルレコーダーを作る関数
+const create_tr = () => {
+  const details = document.getElementById('details');
+  const tr = document.createElement('tr');
   for (let i = 0; i < number.value; i++) {
-    console.log(Number((price.value - (price.value % number.value)) / number.value) - list_array[1][i]);
+    tr.setAttribute('id', 'tr' + i);
+    details.appendChild(tr);
   };
+}
+
+// テーブルデータのクラス名を配列に格納
+const table_class = ['members', 'change', 'difference'];
+
+// テーブルデータを作る関数
+const create_td = (members, change, difference) => {
+  const td = document.createElement('td');
+  const tr = document.querySelector('tr');
+  for (let i = 0; i < 3; i++) {
+    td.setAttribute('class', table_class[i]);
+    tr.appendChild(td);
+  };
+  document.getElementsByClassName('members').textContent = members;
+  document.getElementsByClassName('change').textContent = change;
+  document.getElementsByClassName('difference').textContent = difference;
+}
+
+// テーブルのid名とcontentを配列に格納
+const table_id = ['members', 'change', 'difference'];
+const table_header_content = ['名前', 'お釣り', '過不足'];
+
+// テーブルヘッダーを作る関数
+const create_th = () => {
+  const table_header = document.getElementById('table_header');
+  const th = document.createElement('th');
+  for (let i = 0; i < 3; i++) {
+    th.setAttribute('id', table_id[i]);
+    table_header.appendChild(th);
+    document.getElementById(table_id[i]).textContent = table_header_content[i];
+  };
+}
+
+// テーブルを作る関数
+const create_table = () => {
+  create_tr();
+  create_th();
+  for (let i = 0; i < number.value; i++) {
+    create_td(list_array[0][i],list_array[1][i],list_array[2][i]);
+  }
 }
 
 // クリックしたら実行
 document.getElementById('ok').addEventListener('click', function() {
 
   save_data();
-  culculation();
-
-})
-
-const create_td = () => {
-
-  const details = document.getElementById('details');
-  const td = document.createElement('td');
-  for (let i = 0; i < number.value; i++) {
-    td.textContent = names_array[i];
-    details.appendChild(td);
-  };
+  create_table();
   
-}
-
-const create_table = () => {
-
-  for (let i = 0; i < number.value; i++) {
-    
-    create_tr();
-    create_td();
-
-  };
-}
+})
