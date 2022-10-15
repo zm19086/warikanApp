@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>割り勘ツール</title>
+  <!-- <script src="script.js" defer></script> -->
+  <script src="work.js" defer></script>
+  <link rel="stylesheet" href="style.css">
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"> -->
+</head>
+<body>
+  <header>
+    <h1>割り勘ツール</h1>
+  </header>
+  <main>
+    <form action="script.js" id="form">
+      <p>
+        合計人数：<input type="number" name="number" id="number">人
+      </p>
+      <p>
+        合計金額：<input type="number" name="pay" id="price">円
+      </p>
+      <p>
+        <input type="button" value="決定" id="decide">
+      </p>
+      <div class="mid_result">
+        <p id="each_pay"></p>
+        <ul id="member"></ul>
+      </div>
+      <div id="ok"></div>
+    </form>
+    <table id="details">
+      <tr>
+        <th>メンバー</th>
+        <th></th>
+        <th>お釣り</th>
+      </tr>
+    </table>
+  </main>
+</body>
+</html>
