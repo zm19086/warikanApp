@@ -108,26 +108,19 @@ const create_th = () => {
   };
 }
 
+// テーブルデータを挿入する関数
 const insert_data = (tr_id) => {
   for(let a = 0; a < 3; a++) {
     const td = document.querySelector(`#tr${tr_id} td.${table_class[a]}`);
     for(let b = 0; b < 3; b++) {
       td.textContent = list_array[a][b];
-      // console.log(list_array[a][b]);
       console.log(a);
       console.log(b);
     };
   };
 }
 
-// const insert_data = (tr_id) => {
-//   for(let a = 0; a < 3; a++) {
-//     const td = document.querySelector(`#tr${tr_id} td.${table_class[a]}`);
-//     td.textContent = list_array[a][a];
-//     console.log(list_array[a][a]);
-//   };
-// }
-
+// テーブルデータを作る関数
 const create_td = (tr_id) => {
   for(let k = 0; k < 3; k++) {
     const td = document.createElement('td');
@@ -137,6 +130,7 @@ const create_td = (tr_id) => {
   };
 }
 
+// テーブルレコードを作る関数
 const create_tr = (tr_id) => {
   const tbody = document.getElementById('details');
   
@@ -146,6 +140,7 @@ const create_tr = (tr_id) => {
 
 }
 
+// テーブルを作る関数
 const create_table = () => {
   create_th();
   for(let i = 0; i < number.value; i++) {
