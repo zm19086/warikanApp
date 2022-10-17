@@ -9,19 +9,19 @@ let show_form = false;
 const create_form = () => {
   
   const payment_average = Number((price.value - (price.value % number.value)) / number.value);
-  document.getElementById('each_pay').textContent = 'ひとりあたりの支払い金額は' + payment_average + '円です。余りは' + Number(price.value % number.value) + '円です。';
+  document.getElementById('each_pay').textContent = `ひとりあたりの支払い金額は${payment_average}円です。余りは${Number(price.value % number.value)}円です。`;
 
   for (let i = 1; i - 1 < number.value; i++) {
 
     const member_element = document.getElementById('member');
     const new_member = document.createElement('li');
-    new_member.textContent = 'メンバー' + i + '：';
+    new_member.textContent = `メンバー${i}：`;
 
     const member_inp = document.createElement('input');
     member_inp.setAttribute('type', 'text');
     member_inp.setAttribute('class', 'form names');
     member_inp.setAttribute('placeholder', '名前');
-    member_inp.setAttribute('id', 'member' + i);
+    member_inp.setAttribute('id', `member${i}`);
 
     const member_pay = document.createElement('input');
     member_pay.setAttribute('type', 'number');
@@ -93,60 +93,75 @@ const save_data = () => {
   console.log(list_array);
 }
 
-
-// テーブルレコーダーを作る関数
-const create_tr = () => {
-  const details = document.getElementById('details');
-  const tr = document.createElement('tr');
-  for (let i = 0; i < number.value; i++) {
-    tr.setAttribute('id', 'tr' + i);
-    details.appendChild(tr);
-  };
-}
-
-// テーブルデータのクラス名を配列に格納
-const table_class = ['members', 'change', 'difference'];
-
-// テーブルデータを作る関数
-const create_td = (members, change, difference) => {
-  const td = document.createElement('td');
-  const tr = document.querySelector('tr');
-  for (let i = 0; i < 3; i++) {
-    td.setAttribute('class', table_class[i]);
-    tr.appendChild(td);
-  };
-  document.getElementsByClassName('members').textContent = members;
-  document.getElementsByClassName('change').textContent = change;
-  document.getElementsByClassName('difference').textContent = difference;
-}
-
 // テーブルのid名とcontentを配列に格納
-const table_id = ['members', 'change', 'difference'];
+const table_class = ['members', 'change', 'difference'];
 const table_header_content = ['名前', 'お釣り', '過不足'];
 
 // テーブルヘッダーを作る関数
 const create_th = () => {
   const table_header = document.getElementById('table_header');
-  const th = document.createElement('th');
   for (let i = 0; i < 3; i++) {
-    th.setAttribute('id', table_id[i]);
+    const th = document.createElement('th');
+    th.setAttribute('class', table_class[i]);
     table_header.appendChild(th);
-    document.getElementById(table_id[i]).textContent = table_header_content[i];
+    document.querySelector(`.${table_class[i]}`).textContent = table_header_content[i];
   };
 }
 
-// テーブルを作る関数
-const create_table = () => {
-  create_tr();
-  create_th();
-  for (let i = 0; i < number.value; i++) {
-    create_td(list_array[0][i],list_array[1][i],list_array[2][i]);
-  }
+const insert_data = (tr_id) => {
+  for(let a = 0; a < 3; a++) {
+    const td = document.querySelector(`#tr${tr_id} td.${table_class[a]}`);
+    for(let b = 0; b < 3; b++) {
+      td.textContent = list_array[a][b];
+      // console.log(list_array[a][b]);
+      console.log(a);
+      console.log(b);
+    };
+  };
 }
 
-// クリックしたら実行
-document.getElementById('ok').addEventListener('click', function() {
+// const insert_data = (tr_id) => {
+//   for(let a = 0; a < 3; a++) {
+//     const td = document.querySelector(`#tr${tr_id} td.${table_class[a]}`);
+//     td.textContent = list_array[a][a];
+//     console.log(list_array[a][a]);
+//   };
+// }
 
+const create_td = (tr_id) => {
+  for(let k = 0; k < 3; k++) {
+    const td = document.createElement('td');
+    const tr = document.getElementById(`tr${tr_id}`);
+    td.setAttribute('class', table_class[k]);
+    tr.appendChild(td);
+  };
+}
+
+const create_tr = (tr_id) => {
+  const tbody = document.getElementById('details');
+  
+  const tr = document.createElement('tr');
+  tr.setAttribute('id', `tr${tr_id}`);
+  tbody.appendChild(tr);
+
+}
+
+const create_table = () => {
+  create_th();
+  for(let i = 0; i < number.value; i++) {
+    create_tr(i);
+  };
+  for(let k = 0; k < number.value; k++) {
+    create_td(k);
+  };
+  for(let l = 0; l < number.value; l++) {
+    insert_data(l);
+  };
+}
+
+// // クリックしたら実行
+document.getElementById('ok').addEventListener('click', function() {
+  
   save_data();
   create_table();
   
