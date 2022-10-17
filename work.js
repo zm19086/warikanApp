@@ -31,10 +31,10 @@ const create_form = () => {
     member_element.appendChild(new_member);
     new_member.appendChild(member_inp);
     new_member.appendChild(member_pay);
-  }
+  };
 
   show_form = true;
-}
+};
 
 // okボタンを作る
 const create_button = () => {
@@ -46,7 +46,7 @@ const create_button = () => {
   result_btn.setAttribute('id', 'result');
   
   ok.appendChild(result_btn);
-}
+};
 
 
 // クリックしたら実行
@@ -57,7 +57,7 @@ document.getElementById('decide').addEventListener('click', function() {
     create_form();
     create_button();
   };
-})
+});
 
 // マイナス以下の数値を空データに置き換える関数
 const minus_cut = (num) => {
@@ -66,7 +66,7 @@ const minus_cut = (num) => {
   } else {
     return 0;
   };
-}
+};
 
 // 入力された名前と金額を配列に格納
 let list_array = [];
@@ -91,68 +91,63 @@ const save_data = () => {
   list_array.push(names_array, change_array, difference_array, payment_array);
   
   console.log(list_array);
-}
+};
 
-// テーブルのid名とcontentを配列に格納
+// tableのid名とcontentを配列に格納
 const table_class = ['members', 'change', 'difference'];
 const table_header_content = ['名前', 'お釣り', '過不足'];
 
-// テーブルヘッダーを作る関数
+// thを作る関数
 const create_th = () => {
   const table_header = document.getElementById('table_header');
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < table_class.length; i++) {
     const th = document.createElement('th');
     th.setAttribute('class', table_class[i]);
     table_header.appendChild(th);
     document.querySelector(`.${table_class[i]}`).textContent = table_header_content[i];
   };
-}
+};
 
-// テーブルデータを挿入する関数
+
 const insert_data = (tr_id) => {
-  for(let a = 0; a < 3; a++) {
-    const td = document.querySelector(`#tr${tr_id} td.${table_class[a]}`);
-    for(let b = 0; b < 3; b++) {
-      td.textContent = list_array[a][b];
-      console.log(a);
-      console.log(b);
+  for(let a = 0; a < table_class.length; a++) {
+    for(let b = 0; b < table_class.length; b++) {
+      const td = document.querySelector(`#tr${tr_id} td.${table_class[b]}`);
+      td.textContent = list_array[b][a];
+      console.log(b,a);
     };
   };
-}
+};
 
-// テーブルデータを作る関数
+// tdを作る関数
 const create_td = (tr_id) => {
-  for(let k = 0; k < 3; k++) {
+  table_class.forEach(function(value) {
     const td = document.createElement('td');
     const tr = document.getElementById(`tr${tr_id}`);
-    td.setAttribute('class', table_class[k]);
+    td.setAttribute('class', value);
     tr.appendChild(td);
+  });
+  insert_data(tr_id);
+};
+
+// trを作る関数
+const create_tr = () => {
+  for (let i = 0; i < number.value; i++) {
+    const tbody = document.getElementById('details');
+    const tr = document.createElement('tr');
+    tr.setAttribute('id', `tr${i}`);
+    tbody.appendChild(tr);
   };
-}
+};
 
-// テーブルレコードを作る関数
-const create_tr = (tr_id) => {
-  const tbody = document.getElementById('details');
-  
-  const tr = document.createElement('tr');
-  tr.setAttribute('id', `tr${tr_id}`);
-  tbody.appendChild(tr);
-
-}
-
-// テーブルを作る関数
+// tableを作る関数
 const create_table = () => {
   create_th();
-  for(let i = 0; i < number.value; i++) {
-    create_tr(i);
+  create_tr();
+  for (let i = 0; i < number.value; i++) {
+    create_td(i);
   };
-  for(let k = 0; k < number.value; k++) {
-    create_td(k);
-  };
-  for(let l = 0; l < number.value; l++) {
-    insert_data(l);
-  };
-}
+};
 
 // // クリックしたら実行
 document.getElementById('ok').addEventListener('click', function() {
@@ -160,4 +155,4 @@ document.getElementById('ok').addEventListener('click', function() {
   save_data();
   create_table();
   
-})
+});
