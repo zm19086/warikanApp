@@ -108,26 +108,29 @@ const create_th = () => {
   };
 };
 
-
-const insert_data = (tr_id) => {
-  for(let a = 0; a < table_class.length; a++) {
-    for(let b = 0; b < table_class.length; b++) {
-      const td = document.querySelector(`#tr${tr_id} td.${table_class[b]}`);
-      td.textContent = list_array[b][a];
-      console.log(b,a);
+// データを挿入する関数
+const insert_data = () => {
+  for (let i = 0; i < number.value; i++) {
+    for(let a = 0; a < table_class.length; a++) {
+      for(let b = 0; b < table_class.length; b++) {
+        const td = document.querySelector(`#tr${i} td.${table_class[b]}`);
+        td.textContent = list_array[b][a];
+        console.log(b,a);
+      };
     };
   };
 };
 
 // tdを作る関数
-const create_td = (tr_id) => {
-  table_class.forEach(function(value) {
-    const td = document.createElement('td');
-    const tr = document.getElementById(`tr${tr_id}`);
-    td.setAttribute('class', value);
-    tr.appendChild(td);
-  });
-  insert_data(tr_id);
+const create_td = () => {
+  for (let i = 0; i < number.value; i++) {
+    table_class.forEach(function(value) {
+      const td = document.createElement('td');
+      const tr = document.getElementById(`tr${i}`);
+      td.setAttribute('class', value);
+      tr.appendChild(td);
+    });
+  };
 };
 
 // trを作る関数
@@ -144,9 +147,8 @@ const create_tr = () => {
 const create_table = () => {
   create_th();
   create_tr();
-  for (let i = 0; i < number.value; i++) {
-    create_td(i);
-  };
+  create_td();
+  insert_data();
 };
 
 // // クリックしたら実行
