@@ -2,7 +2,6 @@
 const number = document.getElementById('number');
 const price = document.getElementById('price');
 
-
 let show_form = false;
 
 // 人数に応じて記名欄を追加
@@ -26,6 +25,7 @@ const create_form = () => {
     const member_pay = document.createElement('input');
     member_pay.setAttribute('type', 'number');
     member_pay.setAttribute('class', 'form pay');
+    member_pay.setAttribute('id', `payment${i}`);
     member_pay.setAttribute('placeholder', '支払い金額');
 
     member_element.appendChild(new_member);
@@ -48,7 +48,6 @@ const create_button = () => {
   ok.appendChild(result_btn);
 };
 
-
 // クリックしたら実行
 document.getElementById('decide').addEventListener('click', function() {
   if (number.value === "" || price.value === "") {
@@ -58,6 +57,10 @@ document.getElementById('decide').addEventListener('click', function() {
     create_button();
   };
 });
+
+
+
+
 
 // マイナス以下の数値を空データに置き換える関数
 const minus_cut = (num) => {
@@ -83,7 +86,7 @@ const save_data = () => {
   
   for (let i = 0; i < number.value; i++) {
     names_array.push(members.item(i).value);
-    payment_array.push(payments.item(i).value);
+    payment_array.push(Number(payments.item(i).value));
     change_array.push(minus_cut(payments.item(i).value - Number((price.value - (price.value % number.value)) / number.value)));
     difference_array.push(minus_cut(Number((price.value - (price.value % number.value)) / number.value) - payments.item(i).value));
   };
@@ -92,6 +95,17 @@ const save_data = () => {
   
   console.log(list_array);
 };
+
+const culculate = () => {
+  let sum = 0;
+  for (let i = 0; i < number.value; i++) {
+    sum += list_array[3][i];
+  };
+  document.querySelector('span#sum').textContent = `現在の合計：${sum}円`;
+}
+
+
+
 
 // tableのid名とcontentを配列に格納
 const table_class = ['members', 'change', 'difference'];
@@ -112,11 +126,8 @@ const create_th = () => {
 const insert_data = () => {
   for (let i = 0; i < number.value; i++) {
     for(let a = 0; a < table_class.length; a++) {
-      for(let b = 0; b < table_class.length; b++) {
-        const td = document.querySelector(`#tr${i} td.${table_class[b]}`);
-        td.textContent = list_array[b][a];
-        console.log(b,a);
-      };
+      let td = document.querySelector(`#tr${i} td.${table_class[a]}`);
+      td.textContent = list_array[a][i];
     };
   };
 };
@@ -155,6 +166,7 @@ const create_table = () => {
 document.getElementById('ok').addEventListener('click', function() {
   
   save_data();
+  culculate();
   create_table();
   
 });
